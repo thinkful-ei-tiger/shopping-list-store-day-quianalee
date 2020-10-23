@@ -15,6 +15,7 @@ const generateItemElement = function (item) {
      <span class='shopping-item'>${item.name}</span>
     `;
   }
+  
 
   return `
     <li class='js-item-element' data-item-id='${item.id}'>
@@ -26,6 +27,13 @@ const generateItemElement = function (item) {
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
         </button>
+        
+        <form class="js-edit-item-form">
+          <label for="shopping-list-edit">Edit Item Here</label>
+          <input type="text" name="shopping-item" class="js-shopping-item" placeholder="e.g., broccoli">
+          <button type="submit">Submit</button>
+        </form>
+        
       </div>
     </li>`;
 };
@@ -145,6 +153,20 @@ const handleToggleFilterClick = function () {
   });
 };
 
+const handleEditItemName = function () {
+  $(".shopping-list").on("submit", ".js-edit-item-form", function(event){ 
+    event.preventDefault();
+    let itemId = $(this).parent().parent().data("item-id")
+    let newName =$(this).find(".js-shopping-item").val();
+    store.items.forEach(function(item){
+      if(item.id === itemId){
+        item.name = newName
+      }
+    })
+    render();
+  })
+};
+
 /**
  * This function will be our callback when the
  * page loads. It is responsible for initially 
@@ -158,9 +180,44 @@ const handleShoppingList = function () {
   render();
   handleNewItemSubmit();
   handleItemCheckClicked();
+  handleEditItemName();
   handleDeleteItemClicked();
   handleToggleFilterClick();
 };
 
 // when the page loads, call `handleShoppingList`
 $(handleShoppingList);
+
+
+
+
+
+
+//ADD AN EDIT BUTTON TO CHANGE THE ITEM NAME
+//Create a button for the user to click
+//Find the item's id
+//Find the item in the store
+//Then change the data
+//Find the nome in the HTML
+//We found the buttons parent then we found the sibling of that
+//Change the span(:182) to an input (wrap in a form)
+//
+//~FORM SUBMISSION~
+//
+//replace the original info with the input info
+//find the item's id (from the store)
+//Get the input's value
+//
+
+
+
+
+
+/*$(".shopping-list").on("click", ".shopping-item-edit", function(){
+ let itemId = $(this).parent().parent().data("item-id")
+  $(this).parent().siblings(".shopping-item")
+})*/
+
+
+
+
